@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div>
       <ToastContainer />
-     <Meetings/>
+      <Meetings/>
     </div>
   );
 }

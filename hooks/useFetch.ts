@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { createId } from "@/lib/utils";
+import { GetMeeting } from "@/app/interface/get-meeting";
 
 
 interface MeetingItems {
@@ -14,7 +15,7 @@ interface MeetingItems {
     quotation: string
   }
 const useFetch = () => {
-  const [state, setState] = useState<MeetingItems[] | null>(null);
+  const [state, setState] = useState<GetMeeting[] | null>(null);
   const [needLoad, setNeedLoad] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -24,7 +25,7 @@ const useFetch = () => {
     (async () => {
       try {
         // Fetch data from the backend
-        const response = await axios.get<MeetingItems[]>(`${API_PREFIX}/meetings`);
+        const response = await axios.get<GetMeeting[]>(`${API_PREFIX}/meetings`);
         setState(response.data);
         setLoading(false);
       } catch (error) {
@@ -38,14 +39,14 @@ const useFetch = () => {
     setNeedLoad((prev) => !prev);
   };
 
-  const create = (values: MeetingItems) => {
+  const create = (values: GetMeeting) => {
     values._id = createId();
     setState((prev) => (prev ? [...prev, values] : [values]));
   };
 
-  const update = (meetingId:string, values: MeetingItems[]) => {
+  const update = (meetingId:string, values: GetMeeting[]) => {
     if (state) {
-          const updateState = state.map((item: MeetingItems) => {
+          const updateState = state.map((item: GetMeeting) => {
       if (item._id == meetingId) {
         return {
           ...item,

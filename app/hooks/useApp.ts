@@ -2,15 +2,8 @@
 import useFetch from "@/hooks/useFetch";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { FormDataInterface } from "../interface/formdata";
 
-interface MeetingItems {
-  meetingTopic: string;
-  clientName: string;
-  profileName: string;
-  clientMeetingTime: string;
-  myTime: string;
-  quotation: string;
-}
 const useApp = () => {
   const { state, getData, loading, create, update, deleteOne } = useFetch();
 
@@ -20,7 +13,7 @@ const useApp = () => {
    * Create list of dynamic meetings
    * @param {Object} values
    */
-  const createMeeting = async (values: MeetingItems) => {
+  const createMeeting = async (values: FormDataInterface) => {
     console.log(values, "this is create meeting");
     try {
       create(values);
@@ -48,7 +41,7 @@ const useApp = () => {
    * @param {Object} updateData
    */
   const updateMeeting = async (
-    updateData: MeetingItems[],
+    updateData: FormDataInterface[],
     meetingId: string
   ) => {
     try {
