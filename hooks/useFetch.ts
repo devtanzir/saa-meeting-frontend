@@ -3,17 +3,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { createId } from "@/lib/utils";
 import { GetMeeting } from "@/app/interface/get-meeting";
+import { toast } from "sonner";
 
-
-interface MeetingItems {
-    _id?: string
-    meetingTopic: string
-    clientName: string
-    profileName: string
-    clientMeetingTime: string
-    myTime: string
-    quotation: string
-  }
 const useFetch = () => {
   const [state, setState] = useState<GetMeeting[] | null>(null);
   const [needLoad, setNeedLoad] = useState<boolean>(false);
@@ -30,6 +21,7 @@ const useFetch = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        toast.error("An error occurred while fetching data!");
       }
     })();
   }, [needLoad]);
@@ -65,7 +57,7 @@ const useFetch = () => {
        const data = state.filter((item) => item._id !== id);
     setState(data);
     }
-   
+
   };
 
   return {

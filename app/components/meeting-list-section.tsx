@@ -16,6 +16,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Separator } from "@radix-ui/react-select";
 import {
   Briefcase,
@@ -37,10 +48,13 @@ import React, { useState } from "react";
 import { GetMeeting } from "../interface/get-meeting";
 
 interface MeetingListSectionProps {
-  meetings: GetMeeting[] | null
-  deleteMeeting: (value: string) => void
+  meetings: GetMeeting[] | null;
+  deleteMeeting: (value: string) => void;
 }
-const MeetingListSection = ({meetings, deleteMeeting}: MeetingListSectionProps) => {
+const MeetingListSection = ({
+  meetings,
+  deleteMeeting,
+}: MeetingListSectionProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
@@ -205,7 +219,9 @@ const MeetingListSection = ({meetings, deleteMeeting}: MeetingListSectionProps) 
                           Quotation
                         </p>
                         <p className="text-sm text-green-700 break-words overflow-hidden">
-                          {meeting.quotation ? meeting.quotation : "Quotation is not added"}
+                          {meeting.quotation
+                            ? meeting.quotation
+                            : "Quotation is not added"}
                         </p>
                       </div>
                     </div>
@@ -248,7 +264,8 @@ const MeetingListSection = ({meetings, deleteMeeting}: MeetingListSectionProps) 
                     <span>Handled by {meeting.yourName}</span>
                     <span>•</span>
                     <span>
-                      Created {new Date(meeting.createdAt!).toLocaleDateString()}
+                      Created{" "}
+                      {new Date(meeting.createdAt!).toLocaleDateString()}
                     </span>
                   </div>
                 </CardContent>
@@ -263,15 +280,41 @@ const MeetingListSection = ({meetings, deleteMeeting}: MeetingListSectionProps) 
                       <Edit className="h-4 w-4 mr-2" />
                       Edit
                     </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => deleteMeeting(meeting._id!)}
-                      className="flex-1 border-2 border-red-200 text-red-700 hover:bg-red-50 hover:border-red-300 hover:text-red-700 transition-colors bg-transparent cursor-pointer"
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex-1 border-2 border-red-200 text-red-700 hover:bg-red-50 hover:border-red-300 hover:text-red-700 transition-colors bg-transparent cursor-pointer"
+                        >
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Delete
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you absolutely sure?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently
+                            delete your account and remove your data from our
+                            servers.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel className="cursor-pointer transition-all duration-300 hover:scale-105">
+                            Cancel
+                          </AlertDialogCancel>
+                          <AlertDialogAction
+                            className="cursor-pointer transition-all duration-300 hover:scale-105"
+                            onClick={() => deleteMeeting(meeting._id!)}
+                          >
+                            Continue
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </CardFooter>
               </Card>

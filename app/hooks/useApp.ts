@@ -1,8 +1,8 @@
 "use client";
 import useFetch from "@/hooks/useFetch";
 import axios from "axios";
-import { toast } from "react-toastify";
 import { FormDataInterface } from "../interface/formdata";
+import { toast } from "sonner";
 
 const useApp = () => {
   const { state, getData, loading, create, update, deleteOne } = useFetch();
@@ -14,7 +14,6 @@ const useApp = () => {
    * @param {Object} values
    */
   const createMeeting = async (values: FormDataInterface) => {
-    console.log(values, "this is create meeting");
     try {
       create(values);
       // Send the data to the API using Axios
@@ -29,11 +28,11 @@ const useApp = () => {
 
         getData();
       } else {
-        toast.error("Failed to create the Meeting");
+        toast.error("Failed to create the Meeting!");
       }
     } catch (error) {
       console.error("Error submitting the form:", error);
-      toast.error("An error occurred while submitting the form");
+      toast.error("An error occurred while submitting the form!");
     }
   };
   /**
@@ -57,11 +56,11 @@ const useApp = () => {
         toast.success("Meeting Updated successfully!");
         getData();
       } else {
-        toast.error("Failed to update the meeting");
+        toast.error("Failed to update the meeting!");
       }
     } catch (error) {
       console.error("Error submitting the form:", error);
-      toast.error("An error occurred while submitting the form");
+      toast.error("An error occurred while submitting the form!");
     }
   };
   /**
@@ -76,14 +75,14 @@ const useApp = () => {
 
       // Handle the response
       if (response.status === 203) {
-        toast.success("Meeting Is Deleted");
+        toast.success("Meeting Is Deleted!");
         getData();
       } else {
-        toast.error("Failed to delete the Meeting");
+        toast.error("Failed to delete the Meeting!");
       }
     } catch (error) {
       console.error("Error delete the meeting:", error);
-      toast.error("An error occurred while deleting the meeting");
+      toast.error("An error occurred while deleting the meeting!");
     }
   };
 
