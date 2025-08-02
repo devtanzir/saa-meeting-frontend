@@ -38,9 +38,10 @@ const useApp = () => {
   /**
    * Update the dynamic meeting
    * @param {Object} updateData
+   * @param {String} meetingId
    */
   const updateMeeting = async (
-    updateData: FormDataInterface[],
+    updateData: FormDataInterface,
     meetingId: string
   ) => {
     try {

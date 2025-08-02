@@ -46,17 +46,25 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 import { GetMeeting } from "../interface/get-meeting";
+import { profileName } from "../constants/profile-name";
+import { FormDataInterface } from "../interface/formdata";
+import EditModal from "./edit-modal";
 
 interface MeetingListSectionProps {
   meetings: GetMeeting[] | null;
   deleteMeeting: (value: string) => void;
+  updateMeeting: (value: FormDataInterface, id: string) => void;
 }
 const MeetingListSection = ({
   meetings,
   deleteMeeting,
+  updateMeeting,
 }: MeetingListSectionProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [profileFilter, setProfileFilter] = useState("all");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingMeetingId, setEditingMeetingId] = useState<string | null>(null);
 
   const filteredMeetings = meetings?.filter((meeting: GetMeeting) => {
     const matchesSearch =
@@ -66,8 +74,52 @@ const MeetingListSection = ({
       statusFilter === "all" ||
       (statusFilter === "pending" && meeting.isPending) ||
       (statusFilter === "done" && !meeting.isPending);
-    return matchesSearch && matchesStatus;
+    const matchesProfile =
+      profileFilter === "all" || meeting.profileName === profileFilter;
+    return matchesSearch && matchesStatus && matchesProfile;
   });
+
+  const [editFormData, setEditFormData] = useState({
+    meetingTopic: "",
+    clientName: "",
+    profileName: "",
+    clientMeetingTime: "",
+    myTime: "",
+    quotation: "",
+    isPending: true,
+    clientTimezone: "",
+    notes: "",
+    yourName: "",
+  });
+  const handleEditInputChange = (field: string, value: string | boolean) => {
+    setEditFormData((prev) => ({ ...prev, [field]: value }));
+  };
+  const handleEditClick = (meeting: FormDataInterface) => {
+    setEditFormData({
+      meetingTopic: meeting.meetingTopic,
+      clientName: meeting.clientName,
+      profileName: meeting.profileName,
+      clientMeetingTime: meeting.clientMeetingTime,
+      myTime: meeting.myTime,
+      quotation: meeting.quotation,
+      isPending: meeting.isPending,
+      clientTimezone: meeting.clientTimezone,
+      notes: meeting.notes,
+      yourName: meeting.yourName,
+    });
+    setEditingMeetingId(meeting._id!);
+    setIsEditModalOpen(true);
+  };
+  const handleEditSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingMeetingId) return;
+
+    console.log(editFormData, "Meeting edited");
+    updateMeeting(editFormData, editingMeetingId);
+
+    setIsEditModalOpen(false);
+    setEditingMeetingId(null);
+  };
 
   const formatDateTime = (dateTime: string) => {
     return new Date(dateTime).toLocaleString("en-US", {
@@ -103,6 +155,20 @@ const MeetingListSection = ({
                 <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="pending">Pending</SelectItem>
                 <SelectItem value="done">Done</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={profileFilter} onValueChange={setProfileFilter}>
+              <SelectTrigger className="w-48 h-11 border-2 border-gray-200 focus:border-blue-500">
+                <User className="h-4 w-4 mr-2" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Profiles</SelectItem>
+                {profileName.map((profile) => (
+                  <SelectItem key={profile} value={profile}>
+                    {profile}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -275,6 +341,7 @@ const MeetingListSection = ({
                     <Button
                       variant="outline"
                       size="sm"
+                      onClick={() => handleEditClick(meeting)}
                       className="flex-1 border-2 border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-colors bg-transparent cursor-pointer"
                     >
                       <Edit className="h-4 w-4 mr-2" />
@@ -322,6 +389,13 @@ const MeetingListSection = ({
           </div>
         )}
       </div>
+      <EditModal
+        isEditModalOpen={isEditModalOpen}
+        setIsEditModalOpen={setIsEditModalOpen}
+        handleEditSubmit={handleEditSubmit}
+        editFormData={editFormData}
+        handleEditInputChange={handleEditInputChange}
+      />
     </>
   );
 };

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { createId } from "@/lib/utils";
@@ -16,7 +16,9 @@ const useFetch = () => {
     (async () => {
       try {
         // Fetch data from the backend
-        const response = await axios.get<GetMeeting[]>(`${API_PREFIX}/meetings`);
+        const response = await axios.get<GetMeeting[]>(
+          `${API_PREFIX}/meetings`
+        );
         setState(response.data);
         setLoading(false);
       } catch (error) {
@@ -36,28 +38,26 @@ const useFetch = () => {
     setState((prev) => (prev ? [...prev, values] : [values]));
   };
 
-  const update = (meetingId:string, values: GetMeeting[]) => {
+  const update = (meetingId: string, values: GetMeeting) => {
     if (state) {
-          const updateState = state.map((item: GetMeeting) => {
-      if (item._id == meetingId) {
-        return {
-          ...item,
-          ...values,
-        };
-      }
-      return item;
-    });
-    setState(updateState);
+      const updateState = state.map((item: GetMeeting) => {
+        if (item._id == meetingId) {
+          return {
+            ...item,
+            ...values,
+          };
+        }
+        return item;
+      });
+      setState(updateState);
     }
-
   };
 
   const deleteOne = (id: string) => {
     if (state) {
-       const data = state.filter((item) => item._id !== id);
-    setState(data);
+      const data = state.filter((item) => item._id !== id);
+      setState(data);
     }
-
   };
 
   return {
