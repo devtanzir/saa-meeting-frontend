@@ -136,8 +136,8 @@ const MeetingListSection = ({
       <div className="xl:col-span-2 space-y-8">
         {/* Search and Filter Bar */}
         <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white/80 backdrop-blur-sm rounded-2xl p-6 border-0 shadow-lg">
-          <div className="flex items-center gap-4 flex-1">
-            <div className="relative flex-1 max-w-md">
+          <div className="flex items-center gap-4 flex-1 flex-wrap">
+            <div className="relative flex-1 md:max-w-md w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input
                 placeholder="Search meetings..."
@@ -147,7 +147,7 @@ const MeetingListSection = ({
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-40 h-11 border-2 border-gray-200 focus:border-blue-500">
+              <SelectTrigger className="md:w-40 w-full h-11 border-2 border-gray-200 focus:border-blue-500">
                 <Filter className="h-4 w-4 mr-2" />
                 <SelectValue />
               </SelectTrigger>
@@ -158,7 +158,7 @@ const MeetingListSection = ({
               </SelectContent>
             </Select>
             <Select value={profileFilter} onValueChange={setProfileFilter}>
-              <SelectTrigger className="w-48 h-11 border-2 border-gray-200 focus:border-blue-500">
+              <SelectTrigger className="md:w-48 w-full h-11 border-2 border-gray-200 focus:border-blue-500">
                 <User className="h-4 w-4 mr-2" />
                 <SelectValue />
               </SelectTrigger>
