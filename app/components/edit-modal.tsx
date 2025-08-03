@@ -100,13 +100,13 @@ const EditModal = ({
                   htmlFor="edit-yourName"
                   className="text-sm font-semibold text-gray-700"
                 >
-                  Your Name *
+                  Username *
                 </Label>
                 <Input
                   id="edit-yourName"
                   value={editFormData.yourName}
                   onChange={(e) =>
-                    handleEditInputChange("yourName", e.target.value)
+                  handleEditInputChange("yourName", e.target.value)
                   }
                   placeholder="Your Full Name"
                   className="h-12 border-2 border-gray-200 focus:border-blue-500 transition-colors"

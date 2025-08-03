@@ -107,7 +107,7 @@ const MeetingForm = ({createMeeting}: MeetingFormProps) => {
                     htmlFor="yourName"
                     className="text-sm font-semibold text-gray-700"
                   >
-                    Your Name *
+                    Username *
                   </Label>
                   <Input
                     id="yourName"
