@@ -49,6 +49,7 @@ import { GetMeeting } from "../interface/get-meeting";
 import { profileName } from "../constants/profile-name";
 import { FormDataInterface } from "../interface/formdata";
 import EditModal from "./edit-modal";
+import Link from "next/link";
 
 interface MeetingListSectionProps {
   meetings: GetMeeting[] | null;
@@ -286,7 +287,18 @@ const MeetingListSection = ({
                         </p>
                         <p className="text-sm text-green-700 break-words overflow-hidden">
                           {meeting.quotation
-                            ? meeting.quotation
+                            ?  meeting.quotation.startsWith("http") ? (
+                              <Link
+                                href={meeting.quotation}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-sm text-green-700 break-words overflow-hidden hover:text-green-800 hover:underline transition-colors cursor-pointer"
+                              >
+                                {meeting.quotation}
+                              </Link>
+                            ) : (
+                              <p className="text-sm text-green-700 break-words">{meeting.quotation}</p>
+                            )
                             : "Quotation is not added"}
                         </p>
                       </div>
@@ -314,11 +326,13 @@ const MeetingListSection = ({
                         <p className="text-sm font-semibold text-gray-900 mb-1">
                           Notes
                         </p>
-                        <p className="text-sm text-gray-700 leading-relaxed line-clamp-2">
+                        <div className="max-h-20 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                        <p className="text-sm text-gray-700 leading-relaxed">
                           {meeting.notes
                             ? meeting.notes
                             : "There is nothing to show"}
                         </p>
+                        </div>
                       </div>
                     </div>
                   </div>
